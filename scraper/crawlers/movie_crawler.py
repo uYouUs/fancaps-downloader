@@ -30,13 +30,13 @@ class MovieCrawler:
                 print(f"Error fetching or parsing page: {e}")
                 break
             
-            for img in beautifulSoup.find_all("img", src=re.compile("^https://moviethumbs.fancaps.net/")):
+            for img in beautifulSoup.find_all("img", src=re.compile("^https://mvt.fancaps.net/")):
                 imgSrc = img.get("src")
                 imgAlt = img.get("alt")
                 if not alt:
                     alt = imgAlt
                 if alt == imgAlt:
-                    picLinks.append(imgSrc.replace("https://moviethumbs.fancaps.net/", "https://mvcdn.fancaps.net/"))
+                    picLinks.append(imgSrc.replace("https://mvt.fancaps.net/", "https://cdni.fancaps.net/file/fancaps-movieimages/"))
             
             try:
                 # Generate and verify the existence of the next page URL

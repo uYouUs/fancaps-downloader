@@ -19,12 +19,11 @@ class EpisodeCrawler:
 
         epType = match.group(1)  # Episode type (tv or anime)
         subfolder = os.path.join(match.group(2), match.group(3))  # Construct subfolder path
-
         # Set CDN based on episode type
         if epType == 'tv':
-            cdn = 'tvcdn'
+            cdn = 'tvt'
         else:
-            cdn = 'ancdn'
+            cdn = 'ant'
 
         while currentUrl:
             try:
@@ -46,14 +45,14 @@ class EpisodeCrawler:
                 break
 
             # Find all image tags with a specific source pattern
-            for img in beautifulSoup.find_all("img", src=re.compile("^https://"+epType+"thumbs.fancaps.net/")):
+            for img in beautifulSoup.find_all("img", src=re.compile("^https://"+cdn+".fancaps.net/")):
                 imgSrc = img.get("src")
                 imgAlt = img.get("alt")
                 if not alt:
                     alt = imgAlt  # Set alt if not already set
                 if alt == imgAlt:
                     # Add image source to list, replacing the domain with the CDN domain
-                    picLinks.append(imgSrc.replace("https://"+epType+"thumbs.fancaps.net/", "https://"+cdn+".fancaps.net/"))
+                    picLinks.append(imgSrc.replace("https://"+cdn+".fancaps.net/", "https://cdni.fancaps.net/file/fancaps-"+epType+"images/"))
 
             # Check for a next page link
             nextPage = beautifulSoup.find("a", href=lambda href: href and f"&page={pageNumber + 1}" in href)

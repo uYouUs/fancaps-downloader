@@ -7,8 +7,8 @@ from tqdm import tqdm
 import time
 from http.client import IncompleteRead  # Import IncompleteRead exception
 
-def _download(url, path, timeout=10, attempts=3, delay=0.01):  # Added attempts parameter
-    req = Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0'})
+def _download(url, path, timeout=20, attempts=5, delay=0.05):  # Added attempts parameter
+    req = Request(url, headers={'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/140.0'})
     filename = os.path.join(path, url.split('/')[-1])
 
     for attempt in range(attempts):
@@ -32,7 +32,7 @@ def _download(url, path, timeout=10, attempts=3, delay=0.01):  # Added attempts 
 
 class Downloader:
 
-    def downloadUrls(self, path, urls, delay=1):
+    def downloadUrls(self, path, urls, delay=0.5):
         os.makedirs(path, exist_ok=True)
 
         total = len(urls)
@@ -42,7 +42,7 @@ class Downloader:
             with lock:
                 pbar.update(1)
 
-        with concurrent.futures.ThreadPoolExecutor() as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
             with tqdm(total=total) as pbar:
                 futures = []
                 for url in urls:
