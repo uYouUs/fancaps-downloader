@@ -53,3 +53,25 @@ class Downloader:
                 for future in concurrent.futures.as_completed(futures):
                     future.result()
 
+    def downloadUrlsSlow(self, path, urls, delay=0.6):
+        os.makedirs(path, exist_ok=True)
+
+        total = len(urls)
+        lock = threading.Lock()
+
+        def update_progress():
+            with lock:
+                pbar.update(1)
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+            with tqdm(total=total) as pbar:
+                futures = []
+                for url in urls:
+                    future = executor.submit(_download, url, path, delay=delay)  # Pass delay as an argument
+                    future.add_done_callback(lambda _: update_progress())
+                    futures.append(future)
+                    time.sleep(delay)
+
+                for future in concurrent.futures.as_completed(futures):
+                    future.result()
+
