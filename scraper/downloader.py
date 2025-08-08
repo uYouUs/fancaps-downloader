@@ -32,7 +32,7 @@ def _download(url, path, timeout=20, attempts=5, delay=0.05):  # Added attempts 
 
 class Downloader:
 
-    def downloadUrls(self, path, urls, delay=0.5):
+    def downloadUrls(self, path, urls, delay=0.6):
         os.makedirs(path, exist_ok=True)
 
         total = len(urls)
@@ -53,7 +53,7 @@ class Downloader:
                 for future in concurrent.futures.as_completed(futures):
                     future.result()
 
-    def downloadUrlsSlow(self, path, urls, delay=0.6):
+    def downloadUrlsSlow(self, path, urls, delay=0.8):
         os.makedirs(path, exist_ok=True)
 
         total = len(urls)
@@ -63,7 +63,7 @@ class Downloader:
             with lock:
                 pbar.update(1)
 
-        with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
             with tqdm(total=total) as pbar:
                 futures = []
                 for url in urls:

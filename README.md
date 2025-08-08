@@ -4,6 +4,10 @@
 
 This project it's a simple Python script for download screencaps from https://fancaps.net.
 
+## Rate Limit
+If the images are too small, you may hit the rate limit. If this happens you will want to add: `--slow` at the end of the command.
+You will either have to wait a while for the limit block to pass, or use a vpn.
+
 ## Getting Started <a name = "getting_started"></a>
 
 ### Prerequisites
